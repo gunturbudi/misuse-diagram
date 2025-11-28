@@ -2,6 +2,17 @@
 
 A Flask-based web application that provides an interactive UML Use Case diagram editor with AI-powered security threat analysis. The system automatically generates misuse cases (security threat scenarios) to help identify potential vulnerabilities in your use case diagrams.
 
+## How It Works
+
+![System Approach](approach_image.jpg)
+
+The system follows a workflow where:
+1. User creates use case diagrams in the interactive editor
+2. User selects a use case for security analysis
+3. The system sends the use case information to an LLM (Large Language Model)
+4. The LLM analyzes potential security threats and generates misuse cases
+5. Generated misuse cases are presented to the user for review and integration into the diagram
+
 ## Features
 
 - **Interactive UML Editor**: Canvas-based diagram creation with support for:
