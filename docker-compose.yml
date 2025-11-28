@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  flask-uml-editor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flask-uml-editor
+    ports:
+      - "2346:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    env_file:
+      - .env
+    volumes:
+      # Mount source code for development (hot reload)
+      - ./static:/app/static
+      - ./templates:/app/templates
+      - ./app.py:/app/app.py
+      # Mount logs directory
+      - ./logs:/app/logs
+      - ./api_calls.log:/app/api_calls.log
+    restart: unless-stopped
+    networks:
+      - uml-editor-network
+
+networks:
+  uml-editor-network:
+    driver: bridge

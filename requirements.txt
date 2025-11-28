@@ -1,0 +1,4 @@
+Flask>=2.2.0
+python-dotenv>=1.0.0
+aisuite>=0.1.0  # Ganti versi sesuai dengan yang kamu gunakan atau pastikan ada di PyPI/private repo
+gunicorn>=20.1.0  # Untuk deployment (opsional)

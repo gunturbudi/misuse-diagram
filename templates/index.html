@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UML Use Case Diagram Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Update the header div in index.html -->
+        <div class="header">
+            <h1><i class="fas fa-project-diagram"></i> UML Use Case Diagram Editor</h1>
+            <div>
+                <button id="show-tutorial" class="btn btn-info">
+                    <i class="fas fa-question-circle"></i> Connection Guide
+                </button>
+                <button id="export-btn" class="btn btn-secondary">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button id="save-btn" class="btn btn-secondary">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <button id="load-btn" class="btn btn-secondary">
+                    <i class="fas fa-folder-open"></i> Load
+                </button>
+                <button id="clear-btn" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Clear
+                </button>
+            </div>
+        </div>
+        <div class="toolbar">
+            <div class="tool-group">
+                <span class="tool-group-label">Selection</span>
+                <button id="select-tool" class="tool active" title="Select Tool">
+                    <i class="fas fa-mouse-pointer"></i> Select
+                </button>
+            </div>
+            <div class="tool-group">
+                <span class="tool-group-label">Elements</span>
+                <button id="actor-tool" class="tool" title="Actor">
+                    <i class="fas fa-user"></i> Actor
+                </button>
+                <button id="usecase-tool" class="tool" title="Use Case">
+                    <i class="fas fa-circle"></i> Use Case
+                </button>
+                <button id="system-tool" class="tool" title="System Boundary">
+                    <i class="fas fa-square"></i> System
+                </button>
+            </div>
+            <div class="tool-group">
+                <span class="tool-group-label">Relationships</span>
+                <button id="association-tool" class="tool" title="Association">
+                    <i class="fas fa-minus"></i> Association
+                </button>
+                <button id="include-tool" class="tool" title="Include Relationship">
+                    <i class="fas fa-long-arrow-alt-right"></i> Include
+                </button>
+                <button id="extend-tool" class="tool" title="Extend Relationship">
+                    <i class="fas fa-code-branch"></i> Extend
+                </button>
+                <button id="generalization-tool" class="tool" title="Generalization">
+                    <i class="fas fa-arrow-up"></i> Generalize
+                </button>
+            </div>
+            <div class="tool-group">
+                <span class="tool-group-label">Misuse Cases</span>
+                <button id="misuser-tool" class="tool" title="Misuser">
+                    <i class="fas fa-user-ninja"></i> Misuser
+                </button>
+                <button id="misusecase-tool" class="tool" title="Misuse Case">
+                    <i class="fas fa-exclamation-circle"></i> Misuse Case
+                </button>
+                <button id="threatens-tool" class="tool" title="Threatens Relationship">
+                    <i class="fas fa-bolt"></i> Threatens
+                </button>
+            </div>
+        </div>
+        <div class="editor-container">
+            <div id="properties-panel">
+                <div class="panel-header">
+                    <h3>Properties</h3>
+                </div>
+                <div class="panel-content">
+                    <div id="element-properties">
+                        <!-- Multi-Line Text Editor -->
+                        <div class="property" id="name-property">
+                            <label for="element-text-editor">Text:</label>
+                            <textarea id="element-text-editor" class="text-editor" rows="4" placeholder="Enter element text..."></textarea>
+                        </div>
+                        
+                        <!-- Font Settings Section -->
+                        <div class="property-section">
+                            <h4 class="section-header"><i class="fas fa-font"></i> Font Settings</h4>
+                            
+                            <div class="property">
+                                <label for="font-family">Font Family:</label>
+                                <select id="font-family" class="form-control">
+                                    <!-- Options will be populated by JavaScript -->
+                                </select>
+                            </div>
+                            
+                            <div class="property-row">
+                                <div class="property property-half">
+                                    <label for="font-size">Size:</label>
+                                    <input type="number" id="font-size" class="form-control" min="8" max="72" step="1">
+                                </div>
+                                
+                                <div class="property property-half">
+                                    <label for="font-weight">Weight:</label>
+                                    <select id="font-weight" class="form-control">
+                                        <!-- Options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="property-row">
+                                <div class="property property-half">
+                                    <label for="text-align">Alignment:</label>
+                                    <select id="text-align" class="form-control">
+                                        <!-- Options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                                
+                                <div class="property property-half">
+                                    <label for="font-color">Color:</label>
+                                    <input type="color" id="font-color" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="property">
+                                <label for="line-height">Line Height:</label>
+                                <input type="number" id="line-height" class="form-control" min="0.8" max="2.5" step="0.1" value="1.2">
+                            </div>
+                        </div>
+                        
+                        <button id="apply-properties" class="btn btn-primary btn-block">
+                            <i class="fas fa-check"></i> Apply
+                        </button>
+                        <button id="delete-element" class="btn btn-danger btn-block">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        
+                        <div id="misuse-case-controls" style="display: none; margin-top: 20px; border-top: 1px solid var(--gray-300); padding-top: 20px;">
+                            <h4><i class="fas fa-shield-alt"></i> Security Analysis</h4>
+                            <p>Generate potential security threats and misuse cases for the selected use case.</p>
+                            <button id="generate-misuse-cases" class="btn btn-primary btn-block">
+                                <i class="fas fa-bolt"></i> Generate Misuse Cases
+                            </button>
+                            <div id="misuse-generation-status"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="canvas-container">
+                <canvas id="diagram-canvas"></canvas>
+            </div>
+            <!-- New Misuse Case Sidebar -->
+            <div id="misuse-case-panel" class="misuse-case-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-shield-alt"></i> Misuse Case Analysis</h3>
+                    <button id="close-misuse-panel" class="panel-close-btn" title="Close panel">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="panel-content">
+                    <div class="panel-section">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Security Threat Analysis</h4>
+                        <p>Generate and manage potential security threats and misuse cases for your system.</p>
+                        
+                        <div class="input-group">
+                            <label for="analysis-target">Analysis Target:</label>
+                            <select id="analysis-target" class="form-control">
+                                <option value="selected">Selected Use Case</option>
+                                <option value="all">All Use Cases</option>
+                                <option value="system">Entire System</option>
+                            </select>
+                        </div>
+                        
+                        <div id="selected-usecase-info" class="selected-element-info">
+                            <p><strong>No use case selected.</strong> Please select a use case or choose a different analysis target.</p>
+                        </div>
+
+                        <div class="panel-actions">
+                            <button id="generate-misuse-btn" class="btn btn-primary btn-block">
+                                <i class="fas fa-bolt"></i> Generate Misuse Cases
+                            </button>
+                        </div>
+                        
+                        <div id="generation-status" class="status-indicator"></div>
+                    </div>
+                    
+                    <div class="panel-section">
+                        <h4><i class="fas fa-list"></i> Generated Misuse Cases</h4>
+                        <div id="misuse-case-list" class="misuse-case-list">
+                            <p class="empty-state">No misuse cases generated yet. Use the button above to generate potential security threats.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-section panel-section-actions">
+                        <button id="add-selected-misuse" class="btn btn-success btn-block" disabled>
+                            <i class="fas fa-plus"></i> Add Selected to Diagram
+                        </button>
+                        <button id="clear-misuse-cases" class="btn btn-secondary btn-block" disabled>
+                            <i class="fas fa-trash"></i> Clear Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Connection Help Tooltip -->
+    <div id="connection-help" class="connection-help"></div>
+
+    <!-- Tutorial Panel -->
+    <div id="tutorial-panel" class="tutorial-panel">
+        <div class="tutorial-header">
+            <h3><i class="fas fa-book"></i> UML Connection Guide</h3>
+            <button id="close-tutorial" class="tutorial-close">&times;</button>
+        </div>
+        <div class="tutorial-content">
+            <div class="tutorial-section">
+                <h4><i class="fas fa-cube"></i> Creating Elements</h4>
+                <ol>
+                    <li>Click on an element tool in the toolbar (Actor, Use Case, etc.)</li>
+                    <li>Click on the canvas where you want to place the element</li>
+                    <li>The tool will automatically switch back to "Select" after placement</li>
+                </ol>
+            </div>
+            
+            <div class="tutorial-section">
+                <h4><i class="fas fa-link"></i> Creating Connections</h4>
+                <ol>
+                    <li>Click on a connection tool in the toolbar (Association, Include, etc.)</li>
+                    <li>Click on the source element (first element to connect from)</li>
+                    <li>The element will be highlighted with a blue border</li>
+                    <li>Click on a target element to complete the connection</li>
+                </ol>
+                <p><strong>Tip:</strong> Press ESC key or click on an empty area to cancel a connection</p>
+            </div>
+            
+            <div class="tutorial-section">
+                <h4><i class="fas fa-check-circle"></i> Valid Connections</h4>
+                <ul>
+                    <li><span class="connection-type"><i class="fas fa-minus"></i> Association:</span> Actor ↔ Use Case, Misuser ↔ Misuse Case</li>
+                    <li><span class="connection-type"><i class="fas fa-long-arrow-alt-right"></i> Include:</span> Use Case → Use Case (different ones)</li>
+                    <li><span class="connection-type"><i class="fas fa-code-branch"></i> Extend:</span> Use Case → Use Case (different ones)</li>
+                    <li><span class="connection-type"><i class="fas fa-arrow-up"></i> Generalization:</span> Actor → Actor, Use Case → Use Case (same types)</li>
+                    <li><span class="connection-type"><i class="fas fa-bolt"></i> Threatens:</span> Misuse Case → Use Case</li>
+                </ul>
+            </div>
+            
+            <div class="tutorial-section">
+                <h4><i class="fas fa-arrows-alt"></i> Canvas Navigation</h4>
+                <ul>
+                    <li><strong>Zoom:</strong> Use the mouse wheel or zoom buttons (+/-) to zoom in and out</li>
+                    <li><strong>Pan/Scroll:</strong> Hold Shift and drag to move the canvas around</li>
+                    <li><strong>Pan with Keyboard:</strong> Use Arrow Keys (←↑↓→) to pan the canvas</li>
+                    <li><strong>Alternative Pan:</strong> Click and drag with middle mouse button</li>
+                </ul>
+            </div>
+
+            <div class="tutorial-section">
+                <h4><i class="fas fa-trash-alt"></i> Deleting Elements</h4>
+                <ul>
+                    <li>Select any element or relationship line</li>
+                    <li>Press Delete or Backspace key, or click the Delete button in the properties panel</li>
+                    <li>Relationships (connection lines) can now be deleted directly without undo</li>
+                </ul>
+            </div>
+
+            <div class="tutorial-section">
+                <h4><i class="fas fa-lightbulb"></i> Tips</h4>
+                <ul>
+                    <li>Look for the helpful messages that appear during the connection process</li>
+                    <li>Elements will be highlighted in green when valid for connection</li>
+                    <li>Elements will be highlighted in red when invalid for connection</li>
+                    <li>You can drag elements to reposition them</li>
+                    <li>Select an element to edit its properties in the side panel</li>
+                    <li>Connection lines automatically follow when you move elements</li>
+                    <li>Multi-line text can be entered in the text editor</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toggle button for the misuse case panel -->
+    <button id="show-misuse-panel" class="misuse-panel-toggle">
+        <i class="fas fa-shield-alt"></i> Security Analysis
+    </button>
+
+    <!-- Export Menu -->
+    <div id="export-menu" class="export-menu">
+        <button class="export-option" data-format="svg"><i class="fas fa-file-code"></i> SVG</button>
+        <button class="export-option" data-format="png"><i class="fas fa-file-image"></i> PNG</button>
+        <button class="export-option" data-format="pdf"><i class="fas fa-file-pdf"></i> PDF (Print)</button>
+    </div>
+
+    <!-- Zoom Controls -->
+    <div class="zoom-controls">
+        <button class="zoom-btn zoom-in" title="Zoom In">
+            <i class="fas fa-plus"></i>
+        </button>
+        <div class="zoom-divider"></div>
+        <div class="zoom-indicator">100%</div>
+        <div class="zoom-divider"></div>
+        <button class="zoom-btn zoom-out" title="Zoom Out">
+            <i class="fas fa-minus"></i>
+        </button>
+        <div class="zoom-divider"></div>
+        <button class="zoom-btn zoom-reset" title="Reset Zoom">
+            <i class="fas fa-expand"></i>
+        </button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

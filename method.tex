@@ -1,0 +1,101 @@
+\section{LLM-Assisted Misuse Case Generation Method}
+
+This section details the systematic approach for integrating large language models with misuse case diagram development to support security threat analysis education. Building upon the established theoretical foundations of misuse case modeling \cite{Sindre2001CapturingSR} and the educational potential of LLMs in cybersecurity contexts \cite{Wang2025, Ferrag2024}, our method operationalizes AI-assisted security analysis through a structured five-step process.
+
+\subsection{Five-Step LLM Integration Process}
+
+Our approach implements a systematic methodology for transforming user-created use case diagrams into comprehensive security threat models through LLM assistance. The process, illustrated in Figure~\ref{fig:llm-process}, demonstrates the seamless integration between human expertise in domain modeling and AI capabilities in security threat identification.
+
+\begin{figure}[htbp]
+    \centering
+    % Include the provided image showing the 5-step process
+    \caption{Five-step LLM-assisted misuse case generation process: (1) User creates use case diagram, (2) System extracts use case context and sends to LLM, (3) LLM processes and generates security threat analysis, (4) System processes and structures LLM output, (5) Generated misuse cases are visually integrated with threatens relationships to original use cases.}
+    \label{fig:llm-process}
+\end{figure}
+
+\subsubsection{Step 1: Use Case Context Extraction}
+
+The process begins when users create or select existing use case elements within the visual diagram editor. The system automatically extracts contextual information including use case names, system boundaries, related use cases, and actor relationships. This contextual extraction ensures that subsequent LLM analysis considers the broader system ecosystem rather than isolated functional components.
+
+The extraction process captures three key elements: the primary use case name serving as the focus of security analysis, the system name providing domain context, and related use cases offering comprehensive threat landscape understanding. This structured context extraction enables targeted security analysis while maintaining awareness of inter-functional dependencies that may introduce additional attack vectors.
+
+\subsubsection{Step 2: Contextual Information Transmission}
+
+The extracted contextual information is structured and transmitted to the LLM through a carefully designed prompt engineering framework. This step transforms visual diagram elements into linguistically rich descriptions that enable the LLM to understand both functional requirements and potential security implications.
+
+The transmission employs a dual-prompt architecture consisting of a system prompt establishing the AI's role as a security expert and a user prompt providing specific contextual details. This approach ensures consistent analytical perspective while accommodating diverse domain contexts and use case complexities.
+
+\subsubsection{Step 3: LLM Security Threat Analysis}
+
+The LLM processes the received contextual information through specialized security analysis capabilities trained on extensive cybersecurity literature and threat modeling frameworks. This processing generates comprehensive threat scenarios considering multiple attack vectors, adversarial actors, and potential system vulnerabilities.
+
+The analysis specifically targets realistic security threats relevant to the provided domain context, ensuring that generated misuse cases align with actual threat landscapes rather than generic security patterns. The LLM leverages its understanding of both technical vulnerabilities and human factors in security to produce contextually appropriate threat scenarios.
+
+\subsubsection{Step 4: Response Processing and Structuring}
+
+The system processes LLM responses through validation and structuring mechanisms ensuring consistency with misuse case modeling requirements. This processing includes JSON parsing, semantic validation, and format standardization to enable seamless integration with the visual diagram editor.
+
+Response processing implements error handling for malformed outputs, content filtering for educational appropriateness, and quality assessment ensuring generated threats meet minimum standards for educational value and technical accuracy. This processing step maintains the bridge between AI-generated content and structured visual modeling requirements.
+
+\subsubsection{Step 5: Visual Integration and Relationship Establishment}
+
+The final step integrates processed LLM outputs into the visual diagram environment through automatic creation of misuse case elements and establishment of threatens relationships with original use cases. This integration maintains visual consistency with established misuse case notation while providing clear semantic connections between legitimate functionality and potential threats.
+
+The visual integration includes automatic positioning algorithms to minimize diagram clutter, relationship labeling for educational clarity, and interactive selection enabling users to choose which generated threats to include in their final models. This step completes the transformation from abstract security concepts to concrete visual representations suitable for educational analysis.
+
+\subsection{Prompt Engineering Framework}
+
+Our prompt engineering approach implements a structured methodology for eliciting contextually relevant security threats from large language models. The framework balances specificity in threat identification with flexibility for diverse domain applications.
+
+\subsubsection{System Role Definition}
+
+The system prompt establishes the LLM as a security expert specializing in misuse case identification for software systems. The prompt specifically defines the analytical perspective and expected output format:
+
+\begin{quote}
+\textit{"Anda adalah seorang ahli keamanan yang mengkhususkan diri dalam mengidentifikasi potensi kasus penyalahgunaan (misuse case) untuk sistem perangkat lunak. Diberikan sebuah use case, identifikasi 3-5 skenario penyalahgunaan potensial yang dapat mengancamnya."}
+
+\textit{English translation: "You are a security expert who specializes in identifying potential misuse cases for software systems. Given a use case, identify 3-5 potential misuse scenarios that could threaten it."}
+\end{quote}
+
+This role definition ensures consistent analytical approach while establishing Indonesian language output for local educational context relevance. The prompt explicitly requests 3-5 threat scenarios to balance comprehensiveness with cognitive manageability for educational purposes.
+
+\subsubsection{Structured Output Format}
+
+The prompt engineering framework constrains LLM responses to a standardized JSON structure ensuring consistent integration with the visual modeling environment:
+
+\begin{verbatim}
+{
+    "name": "Concise threat identifier",
+    "description": "Detailed scenario explanation", 
+    "actor": "Threat agent type",
+    "impact": "Potential consequences"
+}
+\end{verbatim}
+
+This structure directly maps to misuse case modeling requirements while providing semantic richness necessary for educational understanding. The four-element format covers essential threat modeling dimensions: identification, explanation, attribution, and consequence assessment.
+
+\subsubsection{Contextual Information Integration}
+
+The user prompt integrates extracted contextual information to provide comprehensive analytical foundation:
+
+\begin{quote}
+\textit{"Use Case: [use\_case\_name] \\
+Sistem: [system\_name] \\
+Use Case Terkait: [related\_use\_cases] \\
+Harap generate 3-5 kasus penyalahgunaan (misuse case) realistis yang dapat mengancam use case ini. Fokus pada kerentanan keamanan, pola penggunaan berbahaya, dan potensi eksploitasi sistem."}
+
+\textit{English translation: "Use Case: [use\_case\_name] \\
+System: [system\_name] \\
+Related Use Cases: [related\_use\_cases] \\
+Please generate 3-5 realistic misuse cases that could threaten this use case. Focus on security vulnerabilities, malicious usage patterns, and potential system exploitation."}
+\end{quote}
+
+This integration ensures that LLM analysis considers specific system contexts, functional relationships, and domain characteristics rather than producing generic security threats. The prompt specifically requests realistic threats focusing on security vulnerabilities, malicious usage patterns, and system exploitation potential.
+
+\subsection{Integration with Existing Methodology}
+
+This LLM-assisted approach complements the experimental methodology described in Section 3 by providing the technical foundation for evaluating AI-enhanced security education tools. The five-step process enables systematic comparison between traditional misuse case development and LLM-assisted approaches across the defined research questions.
+
+The prompt engineering framework directly supports the measurement of security analysis effectiveness (RQ3) by ensuring consistent threat generation quality, while the visual integration process facilitates usability assessment (RQ1) and cognitive workload evaluation (RQ2). The structured output format enables systematic analysis of user acceptance patterns (RQ4) and provides concrete artifacts for qualitative learning impact assessment (RQ5).
+
+The methodological integration ensures that technical implementation choices align with experimental design requirements while maintaining educational effectiveness and analytical rigor throughout the evaluation process.
